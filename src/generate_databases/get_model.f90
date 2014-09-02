@@ -83,6 +83,8 @@
 
   ! prepares external model values if needed
   select case( IMODEL )
+  case( IMODEL_USGS_CENCALVM )
+    call model_usgscencalvm_open(myrank)
   case( IMODEL_USER_EXTERNAL )
     call model_external_broadcast(myrank)
   case( IMODEL_SALTON_TROUGH )
@@ -356,6 +358,13 @@
     endif
   endif
 
+  ! closes external model values if needed
+  select case( IMODEL )
+  case( IMODEL_USGS_CENCALVM )
+    call model_usgscencalvm_close(myrank)
+  end select
+
+
   end subroutine get_model
 
 !
@@ -460,6 +469,10 @@
   case( IMODEL_TOMO )
     ! gets model values from tomography file
     call model_tomography(xmesh,ymesh,zmesh,rho,vp,vs,qkappa_atten,qmu_atten,imaterial_id)
+
+  case( IMODEL_USGS_CENCALVM )
+    ! gets model values from tomography file
+    call model_usgscencalvm_values(xmesh,ymesh,zmesh,rho,vp,vs,qkappa_atten,qmu_atten,imaterial_id)
 
   case( IMODEL_USER_EXTERNAL )
     ! user model from external routine

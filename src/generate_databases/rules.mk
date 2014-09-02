@@ -61,6 +61,7 @@ generate_databases_OBJECTS = \
 	$O/model_aniso.gen.o \
 	$O/model_default.gen.o \
 	$O/model_external_values.gen.o \
+	$O/model_usgscencalvm.gen.o \
 	$O/model_ipati.gen.o \
 	$O/model_gll.gen.o \
 	$O/model_salton_trough.gen.o \
@@ -78,6 +79,7 @@ generate_databases_OBJECTS = \
 generate_databases_MODULES = \
 	$(FC_MODDIR)/create_regions_mesh_ext_par.$(FC_MODEXT) \
 	$(FC_MODDIR)/external_model.$(FC_MODEXT) \
+	$(FC_MODDIR)/usgscencalvm_model.$(FC_MODEXT) \
 	$(FC_MODDIR)/fault_generate_databases.$(FC_MODEXT) \
 	$(FC_MODDIR)/generate_databases_par.$(FC_MODEXT) \
 	$(FC_MODDIR)/model_ipati_adios_mod.$(FC_MODEXT) \
@@ -158,6 +160,8 @@ XGENERATE_DATABASES_OBJECTS = \
 
 
 
+# CENCALVM
+CENCALVM_LIBS = -L/Volumes/Tools/unix/brad/gcc-4.7.3/lib -L/Volumes/Tools/unix/euclid-3.1.2/gcc-4.7.3/lib -lcencalvm -letree
 
 #######################################
 
@@ -173,7 +177,7 @@ xgenerate_databases: $E/xgenerate_databases
 
 # rules for the pure Fortran version
 $E/xgenerate_databases: $(XGENERATE_DATABASES_OBJECTS)
-	${FCLINK} -o ${E}/xgenerate_databases $(XGENERATE_DATABASES_OBJECTS) $(MPILIBS)
+	${FCLINK} -o ${E}/xgenerate_databases $(XGENERATE_DATABASES_OBJECTS) $(MPILIBS) $(CENCALVM_LIBS)
 
 
 
@@ -196,6 +200,7 @@ $O/model_1d_prem.gen.o: $O/generate_databases_par.gen.o
 $O/model_1d_socal.gen.o: $O/generate_databases_par.gen.o
 $O/model_default.gen.o: $O/generate_databases_par.gen.o
 $O/model_external_values.gen.o: $O/generate_databases_par.gen.o
+$O/model_usgscencalvm.gen.o: $O/generate_databases_par.gen.o
 $O/model_gll.gen.o: $O/generate_databases_par.gen.o
 $O/model_ipati.gen.o: $O/generate_databases_par.gen.o
 $O/model_salton_trough.gen.o: $O/generate_databases_par.gen.o

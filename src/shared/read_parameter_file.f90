@@ -348,6 +348,8 @@
     ANISOTROPY = .true.
   case( 'external' )
     IMODEL = IMODEL_USER_EXTERNAL
+  case( 'usgs_cencalvm' )
+    IMODEL = IMODEL_USGS_CENCALVM
   case( 'ipati' )
     IMODEL = IMODEL_IPATI
   case( 'ipati_water' )
