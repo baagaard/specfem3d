@@ -161,7 +161,7 @@ XGENERATE_DATABASES_OBJECTS = \
 
 
 # CENCALVM
-CENCALVM_LIBS = -L/Volumes/Tools/unix/brad/gcc-4.7.3/lib -L/Volumes/Tools/unix/euclid-3.1.2/gcc-4.7.3/lib -lcencalvm -letree
+CENCALVM_LIBS = -lcencalvm -letree
 
 #######################################
 
