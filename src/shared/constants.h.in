@@ -449,6 +449,7 @@
   integer, parameter :: IMODEL_1D_PREM_PB       = 9
   integer, parameter :: IMODEL_IPATI            = 10
   integer, parameter :: IMODEL_IPATI_WATER      = 11
+  integer, parameter :: IMODEL_USGS_CENCALVM    = 12
 
 ! some old tests (currently unstable; do not remove them though, we might fix this one day)
   logical, parameter :: OLD_TEST_TO_FIX_ONE_DAY = .false.

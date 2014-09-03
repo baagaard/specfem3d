@@ -313,6 +313,8 @@
   case( 'aniso' )
     IMODEL = IMODEL_DEFAULT
     ANISOTROPY = .true.
+  case( 'usgs_cencalvm' )
+    IMODEL = IMODEL_USGS_CENCALVM
   case( 'external' )
     IMODEL = IMODEL_USER_EXTERNAL
   case( 'ipati' )
