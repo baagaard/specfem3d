@@ -348,6 +348,8 @@
     write(IMAIN,'(a)',advance='yes') '  tomo'
     case( IMODEL_USER_EXTERNAL )
     write(IMAIN,'(a)',advance='yes') '  external'
+    case( IMODEL_USGS_CENCALVM )
+    write(IMAIN,'(a)',advance='yes') '  usgs_cenvalvm'
     case( IMODEL_IPATI )
     write(IMAIN,'(a)',advance='yes') '  ipati'
     case( IMODEL_IPATI_WATER )

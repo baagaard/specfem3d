@@ -45,22 +45,10 @@
     character(len=64), parameter :: filenameDB = "USGSBayAreaVM-08.3.0.etree"
     character(len=64), parameter :: filenameDBExt = "USGSBayAreaVMExt-08.3.0.etree"
     
-    integer, parameter :: queryType = 2 ! waveres
+    integer, parameter :: queryType = 0 ! maxres
     double precision, parameter :: queryRes = 1.0
     double precision, parameter :: minVs = 500.0
     integer, parameter :: cacheSize = 512
-!---
-!
-! ADD YOUR MODEL HERE
-!
-!---
-
-  ! only here to illustrate an example
-  !  type model_external_variables
-  !    sequence
-  !    double precision dvs(0:dummy_size)
-  !  end type model_external_variables
-  !  type (model_external_variables) MEXT_V
 
   end module usgscencalvm_model
 
@@ -169,8 +157,10 @@
     ! local variables
     character(len=256) errorMsg
 
-    call cencalvm_error_message_f(errHandler, errorMsg, ok)
-    write(6,*) "USGS CenCalVM module: ERROR - "//errorMsg
+    if(ok /= 0) then
+       call cencalvm_error_message_f(errHandler, errorMsg, ok)
+       write(6,*) "USGS CenCalVM module: ERROR - "//errorMsg
+    endif
 
     ! if query generated an error, then bail out, otherwise reset status
     if(ok == 2) stop "USGS CenCalVM module: FATAL ERROR"
@@ -218,16 +208,39 @@
 
     integer :: ok
 
+    double precision :: elevDiff = 25.0
+    double precision :: newElev
+    integer, parameter :: maxIter = 8
+    integer :: iter
+
     integer, parameter :: numVals = 9
     double precision :: vals(9)
 
     call utm_geo(lon,lat,xmesh,ymesh,UTM_PROJECTION_ZONE,IUTM2LONGLAT,SUPPRESS_UTM_PROJECTION)
+    elev = zmesh
+
+    ! Prevent elevations deeper than 45.0 km (bottom of model).
+    if(elev <= -44.95e+3) elev = -44.95e+3
 
     call cencalvm_query_f(query,vals,numVals,lon,lat,elev,ok)
+    iter = 1
+    do while (iter < maxIter)
+       call cencalvm_error_resetstatus_f(errHandler, ok)
+       newElev = elev - 2**(iter-1)*elevDiff;
+       call cencalvm_query_f(query,vals,numVals,lon,lat,newElev,ok)
+       vs = vals(2)
+       if(vs > 0.0) exit
+       if(iter < maxIter) then
+          iter = iter + 1
+       else
+          exit
+       end if
+    end do
     call model_usgscencalvm_checkerr(ok)
 
     vp = vals(1)
     vs = vals(2)
+    if(vs < minVs) vs = minVs
     rho = vals(3)
 
     ! attenuation: Qs
