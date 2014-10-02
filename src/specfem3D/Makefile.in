@@ -78,7 +78,7 @@ GENCODE_35 = -gencode=arch=compute_35,code=\"sm_35,compute_35\"
 
 
 FC = @FC@
-FCFLAGS = #@FCFLAGS@
+FCFLAGS = @FCFLAGS@
 MPIFC = @MPIFC@
 MPILIBS = @MPILIBS@
 FLAGS_CHECK = @FLAGS_CHECK@
