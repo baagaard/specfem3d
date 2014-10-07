@@ -136,10 +136,10 @@
     integer :: ok
 
     call cencalvm_close_f(query, ok)
-    call model_usgscencalvm_checkerr(ok)
+    !call model_usgscencalvm_checkerr(ok)
 
     call cencalvm_destroyquery_f(query, ok)
-    call model_usgscencalvm_checkerr(ok)
+    !call model_usgscencalvm_checkerr(ok)
 
   end subroutine model_usgscencalvm_close
 
